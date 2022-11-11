@@ -2,7 +2,7 @@ import React from 'react';
 import { usePleaseStay } from './hooks/usePleaseStay';
 
 function App() {
-  usePleaseStay();
+  usePleaseStay(["Title One!", "Title Two!", "Title Three?!?"]);
   return (
     <></>
   );

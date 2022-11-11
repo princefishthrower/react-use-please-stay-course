@@ -2,6 +2,6 @@
 
 This is the repository corresponding to the [Newline course "react-use-please-stay with React and TypeScript"](https://www.newline.co/courses/react-use-please-stay-with-react-and-typescript/welcome).
 
-## Lesson 4 - branch `lesson-4`
+## Lesson 5 - branch `lesson-5`
 
-This is the `lesson-4` branch. It contains the code for the [fourth lesson of the course](https://www.newline.co/courses/react-use-please-stay-with-react-and-typescript/building-a-skeleton-create-react-app-to-test-the-hook).
+This is the `lesson-5` branch. It contains the code for the [fifth lesson of the course](https://www.newline.co/courses/react-use-please-stay-with-react-and-typescript/building-title-looping-functionality-with-the-useeffect-hook).
