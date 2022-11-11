@@ -1,0 +1,35 @@
+{
+  "name": "react-use-please-stay-course",
+  "version": "1.0.0",
+  "description": "A fun React hook that animates the document title and/or favicon when focus from the page is lost.",
+  "main": "index.js",
+  "scripts": {
+    "build": "tsc",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/princefishthrower/react-use-please-stay-course.git"
+  },
+  "keywords": [
+    "react",
+    "typescript",
+    "react",
+    "hook",
+    "react",
+    "hooks"
+  ],
+  "author": "Chris Frewin",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/princefishthrower/react-use-please-stay-course/issues"
+  },
+  "homepage": "https://github.com/princefishthrower/react-use-please-stay-course#readme",
+  "peerDependencies": {
+    "react": "^18.2.0"
+  },
+  "devDependencies": {
+    "@types/react": "^18.0.25",
+    "typescript": "^4.8.4"
+  }
+}
