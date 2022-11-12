@@ -1,4 +1,5 @@
 export declare enum AnimationType {
     LOOP = "LOOP",
-    CASCADE = "CASCADE"
+    CASCADE = "CASCADE",
+    MARQUEE = "MARQUEE"
 }

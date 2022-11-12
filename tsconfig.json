@@ -4,7 +4,8 @@
     "jsx": "react",
     "skipLibCheck": true, 
     "allowSyntheticDefaultImports": true,
-    "declaration": true
+    "declaration": true,
+    "lib": ["dom", "es2015"]
   },
   "include": ["src"],
   "exclude": ["example"]

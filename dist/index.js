@@ -14,10 +14,13 @@ var useListenToVisibilityChangeOnMount = function (setShouldToggleTitles) {
     }, []);
 };
 
+var CHROME_TAB_CHARACTER_COUNT = 30;
+
 var AnimationType;
 (function (AnimationType) {
     AnimationType["LOOP"] = "LOOP";
     AnimationType["CASCADE"] = "CASCADE";
+    AnimationType["MARQUEE"] = "MARQUEE";
 })(AnimationType || (AnimationType = {}));
 
 var useInterval = function (callback, interval, shouldRun) {
@@ -49,11 +52,31 @@ var useTitleChangeEffect = function (titles, shouldIterateTitles, animationType)
             ? setTitleIndex(0)
             : setTitleIndex(nextIndex);
     };
+    var runMarqueeIterationLogic = function () {
+        var nextIndex = titleIndex + 1;
+        nextIndex === CHROME_TAB_CHARACTER_COUNT
+            ? setTitleIndex(0)
+            : setTitleIndex(nextIndex);
+    };
     var runLoopTitleLogic = function () {
         document.title = titles[titleIndex];
     };
     var runCascadeTitleLogic = function () {
         document.title = titles[0].substring(0, titleIndex);
+    };
+    var runMarqueeTitleLogic = function () {
+        var carryOverCount = titleIndex + titles[0].length - CHROME_TAB_CHARACTER_COUNT;
+        if (carryOverCount > 0) {
+            var spaceText = "\u205f​​​".repeat(CHROME_TAB_CHARACTER_COUNT - titles[0].length);
+            document.title =
+                titles[0].substring(titles[0].length - carryOverCount, titles[0].length) +
+                    spaceText +
+                    titles[0].substring(0, titles[0].length - carryOverCount);
+        }
+        else {
+            var offset = "\u205f​​​".repeat(titleIndex);
+            document.title = offset + titles[0];
+        }
     };
     // at an interval of 500 ms, increment the titleIndex value
     // reset it to 0 if we've reached the end of the list
@@ -61,16 +84,20 @@ var useTitleChangeEffect = function (titles, shouldIterateTitles, animationType)
         switch (animationType) {
             case AnimationType.CASCADE:
                 return runCascadeIterationLogic();
+            case AnimationType.MARQUEE:
+                return runMarqueeIterationLogic();
             case AnimationType.LOOP:
             default:
                 return runLoopIterationLogic();
         }
-    }, 500, shouldIterateTitles);
+    }, 10, shouldIterateTitles);
     // Each time titleIndex changes, we set the document.title to the value of titles at that index
     useEffect(function () {
         switch (animationType) {
             case AnimationType.CASCADE:
                 return runCascadeTitleLogic();
+            case AnimationType.MARQUEE:
+                return runMarqueeTitleLogic();
             case AnimationType.LOOP:
             default:
                 return runLoopTitleLogic();
