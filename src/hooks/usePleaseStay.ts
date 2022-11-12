@@ -1,36 +1,14 @@
-import { useEffect, useState } from "react";
-import { useInterval } from "./useInterval";
+import { useState } from "react";
+import { useListenToVisibilityChangeOnMount } from "./useListenToVisibilityChangeOnMount";
+import { useTitleChangeEffect } from "./useTitleChangeEffect";
 
 export const usePleaseStay = (titles: string[]) => {
-  const [shouldIterateTitles, setShouldIterateTitles] = useState(true);
-  const [titleIndex, setTitleIndex] = useState(0);
+  const [shouldIterateTitles, setShouldIterateTitles] = useState(false);
 
-  // visibilitychange event handler
-  const handleVisibilityChange = () => {
-    setShouldIterateTitles(document.visibilityState !== "visible");
-  };
+  // Sets the shouldToggleTitles value whenever page visibility is lost.
+  // Handles removing the event listener in cleanup as well.
+  useListenToVisibilityChangeOnMount(setShouldIterateTitles);
 
-  // on mount of this hook, add the event listener. on unmount, remove it
-  useEffect(() => {
-    document.addEventListener("visibilitychange", handleVisibilityChange);
-    return () => {
-      document.removeEventListener("visibilitychange", handleVisibilityChange);
-    };
-  }, []);
-
-  // at an interval of 500 ms, increment the titleIndex value
-  // reset it to 0 if we've reached the end of the list
-  useInterval(
-    () => {
-      const nextIndex = titleIndex + 1;
-      nextIndex === titles.length ? setTitleIndex(0) : setTitleIndex(nextIndex);
-    },
-    500,
-    shouldIterateTitles
-  );
-
-  // Each time titleIndex changes, we set the document.title to the value of titles at that index
-  useEffect(() => {
-    document.title = titles[titleIndex];
-  }, [titleIndex]);
+  // Modifies the document.title of the page whenever shouldToggle is true
+  useTitleChangeEffect(titles, shouldIterateTitles)
 };
