@@ -1,8 +1,8 @@
 import React from 'react';
-import { usePleaseStay } from 'react-use-please-stay';
+import { AnimationType, usePleaseStay } from 'react-use-please-stay';
 
 function App() {
-  usePleaseStay(["Title One!", "Title Two!", "Title Three?!?"]);
+  usePleaseStay(["I am a cascading title!"], AnimationType.CASCADE);
   return (
     <></>
   );
