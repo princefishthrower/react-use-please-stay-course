@@ -1,4 +1,49 @@
-import { useEffect, useRef, useState } from 'react';
+import { useRef, useEffect, useState } from 'react';
+
+var getFavicon = function () {
+    var nodeList = document.getElementsByTagName('link');
+    for (var i = 0; i < nodeList.length; i++) {
+        if (nodeList[i].getAttribute('rel') === 'icon' ||
+            nodeList[i].getAttribute('rel') === 'shortcut icon') {
+            return nodeList[i];
+        }
+    }
+    return null;
+};
+
+var useInterval = function (callback, interval, shouldRun) {
+    var callbackRef = useRef(callback);
+    // Set callbackRef to the latest callback if callback changes
+    useEffect(function () {
+        callbackRef.current = callback;
+    }, [callback]);
+    // Set up the interval
+    useEffect(function () {
+        // Don't schedule if shouldRun is false.
+        if (!shouldRun) {
+            return;
+        }
+        var id = setInterval(function () { return callbackRef.current(); }, interval);
+        return function () { return clearInterval(id); };
+    }, [interval, shouldRun]);
+};
+
+var useFaviconChangeEffect = function (faviconLinks, shouldIterateFavicons) {
+    var _a = useState(0), faviconIndex = _a[0], setFaviconIndex = _a[1];
+    var faviconRef = useRef(getFavicon());
+    // at an interval of 500 ms, increment the faviconIndex value
+    useInterval(function () {
+        var nextIndex = faviconIndex + 1;
+        nextIndex === faviconLinks.length
+            ? setFaviconIndex(0)
+            : setFaviconIndex(nextIndex);
+    }, 500, shouldIterateFavicons);
+    // when favicon index changes, set the favicon href to the given link
+    useEffect(function () {
+        faviconRef.current.href = faviconLinks[faviconIndex];
+        faviconRef.current.setAttribute("style", "transform: rotate(180deg)");
+    }, [faviconIndex]);
+};
 
 var useListenToVisibilityChangeOnMount = function (setShouldToggleTitles) {
     // visibilitychange event handler
@@ -22,23 +67,6 @@ var AnimationType;
     AnimationType["CASCADE"] = "CASCADE";
     AnimationType["MARQUEE"] = "MARQUEE";
 })(AnimationType || (AnimationType = {}));
-
-var useInterval = function (callback, interval, shouldRun) {
-    var callbackRef = useRef(callback);
-    // Set callbackRef to the latest callback if callback changes
-    useEffect(function () {
-        callbackRef.current = callback;
-    }, [callback]);
-    // Set up the interval
-    useEffect(function () {
-        // Don't schedule if shouldRun is false.
-        if (!shouldRun) {
-            return;
-        }
-        var id = setInterval(function () { return callbackRef.current(); }, interval);
-        return function () { return clearInterval(id); };
-    }, [interval, shouldRun]);
-};
 
 var useTitleChangeEffect = function (titles, shouldIterateTitles, animationType) {
     var _a = useState(0), titleIndex = _a[0], setTitleIndex = _a[1];
@@ -90,7 +118,7 @@ var useTitleChangeEffect = function (titles, shouldIterateTitles, animationType)
             default:
                 return runLoopIterationLogic();
         }
-    }, 10, shouldIterateTitles);
+    }, 500, shouldIterateTitles);
     // Each time titleIndex changes, we set the document.title to the value of titles at that index
     useEffect(function () {
         switch (animationType) {
@@ -105,13 +133,15 @@ var useTitleChangeEffect = function (titles, shouldIterateTitles, animationType)
     }, [titleIndex]);
 };
 
-var usePleaseStay = function (titles, animationType) {
+var usePleaseStay = function (titles, animationType, faviconLinks) {
     var _a = useState(false), shouldIterateTitles = _a[0], setShouldIterateTitles = _a[1];
     // Sets the shouldToggleTitles value whenever page visibility is lost.
     // Handles removing the event listener in cleanup as well.
     useListenToVisibilityChangeOnMount(setShouldIterateTitles);
     // Modifies the document.title of the page whenever shouldToggle is true
     useTitleChangeEffect(titles, shouldIterateTitles, animationType);
+    // Modifies the favicon of the page whenever shouldToggle is true
+    useFaviconChangeEffect(faviconLinks, shouldIterateTitles);
 };
 
 export { AnimationType, usePleaseStay };
