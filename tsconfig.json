@@ -2,6 +2,10 @@
   "compilerOptions": {
     "outDir": "dist",
     "jsx": "react",
-    "skipLibCheck": true
-  }
+    "skipLibCheck": true, 
+    "allowSyntheticDefaultImports": true,
+    "declaration": true
+  },
+  "include": ["src"],
+  "exclude": ["example"]
 }

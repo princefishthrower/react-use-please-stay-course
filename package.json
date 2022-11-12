@@ -1,10 +1,15 @@
 {
-  "name": "react-use-please-stay-course",
+  "name": "react-use-please-stay",
   "version": "1.0.0",
   "description": "A fun React hook that animates the document title and/or favicon when focus from the page is lost.",
-  "main": "index.js",
+  "main": "dist/index.js",
+  "module": "dist/index.js",
+  "type": "module",
+  "files": [
+    "dist"
+  ],
   "scripts": {
-    "build": "tsc",
+    "build": "rollup -c",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "repository": {
@@ -29,7 +34,9 @@
     "react": "^18.2.0"
   },
   "devDependencies": {
+    "@rollup/plugin-typescript": "^9.0.2",
     "@types/react": "^18.0.25",
+    "rollup": "^3.2.5",
     "typescript": "^4.8.4"
   }
 }

@@ -20,8 +20,7 @@
     "start": "react-scripts start",
     "build": "react-scripts build",
     "test": "react-scripts test",
-    "eject": "react-scripts eject",
-    "copy-hook": "cp ../src/hooks/usePleaseStay.ts src/hooks/usePleaseStay.ts && cp ../src/hooks/useInterval.ts src/hooks/useInterval.ts"
+    "eject": "react-scripts eject"
   },
   "eslintConfig": {
     "extends": [

@@ -2,6 +2,6 @@
 
 This is the repository corresponding to the [Newline course "react-use-please-stay with React and TypeScript"](https://www.newline.co/courses/react-use-please-stay-with-react-and-typescript/welcome).
 
-## Lesson 5 - branch `lesson-5`
+## Lesson 6 - branch `lesson-6`
 
-This is the `lesson-5` branch. It contains the code for the [fifth lesson of the course](https://www.newline.co/courses/react-use-please-stay-with-react-and-typescript/building-title-looping-functionality-with-the-useeffect-hook).
+This is the `lesson-6` branch. It contains the code for the [sixth lesson of the course](https://www.newline.co/courses/react-use-please-stay-with-react-and-typescript/packaging-react-use-please-stay-as-an-npm-module-using-rollup).
