@@ -1,11 +1,4 @@
-import { useRef, useEffect, useState } from 'react';
-
-var AnimationType;
-(function (AnimationType) {
-    AnimationType["LOOP"] = "LOOP";
-    AnimationType["CASCADE"] = "CASCADE";
-    AnimationType["MARQUEE"] = "MARQUEE";
-})(AnimationType || (AnimationType = {}));
+import { useEffect, useRef, useState } from 'react';
 
 // simple util that issues a console.error() in development mode, and is silent in all others
 var issueWarningMessage = function (message) {
@@ -13,6 +6,26 @@ var issueWarningMessage = function (message) {
         console.warn("usePleaseStay: ".concat(message, " This message will be shown in development only."));
     }
 };
+
+var useMultipleInstancesCheck = function () {
+    // on mount, check if we are not in production
+    useEffect(function () {
+        if (localStorage.getItem("usePleaseStay") !== null) {
+            issueWarningMessage("usePleaseStay should be mounted only once in an application. Doing otherwise could lead to \uD83D\uDC7B strange \uD83D\uDC7B behavior. usePleaseStay was last mounted at ".concat(localStorage.getItem("usePleaseStay"), " Please check your code for multiple usePleaseStay usages. Because React in development uses StrictMode, this warning is only valid if you see this warning appear more than once with different dates in your console. See here for more information: https://reactjs.org/docs/strict-mode.html#ensuring-reusable-state"));
+        }
+        // on mount, set the storage value to the curent ISO time
+        localStorage.setItem("usePleaseStay", new Date().toISOString());
+        // on unmount, remove the value from localStorage
+        return function () { return localStorage.removeItem("usePleaseStay"); };
+    }, []);
+};
+
+var AnimationType;
+(function (AnimationType) {
+    AnimationType["LOOP"] = "LOOP";
+    AnimationType["CASCADE"] = "CASCADE";
+    AnimationType["MARQUEE"] = "MARQUEE";
+})(AnimationType || (AnimationType = {}));
 
 var validateParameters = function (titles, animationType) {
     if (titles.length === 1 && titles[0] === "") {
@@ -161,6 +174,7 @@ var useTitleChangeEffect = function (titles, shouldIterateTitles, animationType,
 var usePleaseStay = function (_a) {
     var titles = _a.titles, _b = _a.animationType, animationType = _b === void 0 ? AnimationType.LOOP : _b, _c = _a.faviconLinks, faviconLinks = _c === void 0 ? [] : _c, _d = _a.interval, interval = _d === void 0 ? 500 : _d, _e = _a.shouldAlwaysPlay, shouldAlwaysPlay = _e === void 0 ? false : _e;
     validateParameters(titles, animationType);
+    useMultipleInstancesCheck();
     var _f = useState(false), shouldIterateTitles = _f[0], setShouldIterateTitles = _f[1];
     // Sets the shouldToggleTitles value whenever page visibility is lost.
     // Handles removing the event listener in cleanup as well.

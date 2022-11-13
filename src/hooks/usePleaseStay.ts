@@ -1,3 +1,4 @@
+import { useMultipleInstancesCheck } from './useMultipleInstanceCheck';
 import { validateParameters } from './../utils/validateParameters';
 import { UsePleaseStayOptions } from './../types/UsePleaseStayOptions';
 import { useState } from "react";
@@ -14,6 +15,7 @@ export const usePleaseStay = ({
   shouldAlwaysPlay = false,
 }: UsePleaseStayOptions) => {
   validateParameters(titles, animationType);
+  useMultipleInstancesCheck()
   const [shouldIterateTitles, setShouldIterateTitles] = useState(false);
 
   // Sets the shouldToggleTitles value whenever page visibility is lost.
