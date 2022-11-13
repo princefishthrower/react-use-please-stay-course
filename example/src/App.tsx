@@ -9,7 +9,8 @@ function App() {
       "https://reactjs.org/logo-180x180.png",
       "https://d8dgeb1f3fxgw.cloudfront.net/static/img/icons/apple-touch-icon.png",
     ],
-    3000
+    3000,
+    true
   );
   return <></>;
 }

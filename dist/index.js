@@ -45,18 +45,22 @@ var useFaviconChangeEffect = function (faviconLinks, shouldIterateFavicons, inte
     }, [faviconIndex]);
 };
 
-var useListenToVisibilityChangeOnMount = function (setShouldToggleTitles) {
+var useListenToVisibilityChangeOnMount = function (setShouldToggleTitles, shouldAlwaysPlay) {
     // visibilitychange event handler
     var handleVisibilityChange = function () {
         setShouldToggleTitles(document.visibilityState !== "visible");
     };
     // on mount of this hook, add the event listener. on unmount, remove it
     useEffect(function () {
+        if (shouldAlwaysPlay) {
+            setShouldToggleTitles(true);
+            return;
+        }
         document.addEventListener("visibilitychange", handleVisibilityChange);
         return function () {
             document.removeEventListener("visibilitychange", handleVisibilityChange);
         };
-    }, []);
+    }, [shouldAlwaysPlay]);
 };
 
 var CHROME_TAB_CHARACTER_COUNT = 30;
@@ -133,11 +137,11 @@ var useTitleChangeEffect = function (titles, shouldIterateTitles, animationType,
     }, [titleIndex]);
 };
 
-var usePleaseStay = function (titles, animationType, faviconLinks, interval) {
+var usePleaseStay = function (titles, animationType, faviconLinks, interval, shouldAlwaysPlay) {
     var _a = useState(false), shouldIterateTitles = _a[0], setShouldIterateTitles = _a[1];
     // Sets the shouldToggleTitles value whenever page visibility is lost.
     // Handles removing the event listener in cleanup as well.
-    useListenToVisibilityChangeOnMount(setShouldIterateTitles);
+    useListenToVisibilityChangeOnMount(setShouldIterateTitles, shouldAlwaysPlay);
     // Modifies the document.title of the page whenever shouldToggle is true
     useTitleChangeEffect(titles, shouldIterateTitles, animationType, interval);
     // Modifies the favicon of the page whenever shouldToggle is true

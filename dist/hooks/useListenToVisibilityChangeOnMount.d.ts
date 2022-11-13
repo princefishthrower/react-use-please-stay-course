@@ -1,1 +1,1 @@
-export declare const useListenToVisibilityChangeOnMount: (setShouldToggleTitles: (shouldToggleTitles: boolean) => void) => void;
+export declare const useListenToVisibilityChangeOnMount: (setShouldToggleTitles: (shouldToggleTitles: boolean) => void, shouldAlwaysPlay: boolean) => void;
