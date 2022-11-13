@@ -1,1 +1,1 @@
-export declare const useFaviconChangeEffect: (faviconLinks: string[], shouldIterateFavicons: boolean) => void;
+export declare const useFaviconChangeEffect: (faviconLinks: string[], shouldIterateFavicons: boolean, interval: number) => void;

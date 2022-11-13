@@ -4,12 +4,13 @@ import { useInterval } from "./useInterval";
 
 export const useFaviconChangeEffect = (
   faviconLinks: string[],
-  shouldIterateFavicons: boolean
+  shouldIterateFavicons: boolean,
+  interval: number
 ) => {
   const [faviconIndex, setFaviconIndex] = useState(0);
   const faviconRef = useRef<HTMLLinkElement | null>(getFavicon());
 
-  // at an interval of 500 ms, increment the faviconIndex value
+  // at an interval of interval ms, increment the faviconIndex value
   useInterval(
     () => {
       const nextIndex = faviconIndex + 1;
@@ -17,7 +18,7 @@ export const useFaviconChangeEffect = (
         ? setFaviconIndex(0)
         : setFaviconIndex(nextIndex);
     },
-    500,
+    interval,
     shouldIterateFavicons
   );
 

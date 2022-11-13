@@ -4,7 +4,7 @@ import { useFaviconChangeEffect } from "./useFaviconChangeEffect";
 import { useListenToVisibilityChangeOnMount } from "./useListenToVisibilityChangeOnMount";
 import { useTitleChangeEffect } from "./useTitleChangeEffect";
 
-export const usePleaseStay = (titles: string[], animationType: AnimationType, faviconLinks: string[]) => {
+export const usePleaseStay = (titles: string[], animationType: AnimationType, faviconLinks: string[], interval: number) => {
   const [shouldIterateTitles, setShouldIterateTitles] = useState(false);
 
   // Sets the shouldToggleTitles value whenever page visibility is lost.
@@ -12,8 +12,8 @@ export const usePleaseStay = (titles: string[], animationType: AnimationType, fa
   useListenToVisibilityChangeOnMount(setShouldIterateTitles);
 
   // Modifies the document.title of the page whenever shouldToggle is true
-  useTitleChangeEffect(titles, shouldIterateTitles, animationType);
+  useTitleChangeEffect(titles, shouldIterateTitles, animationType, interval);
 
   // Modifies the favicon of the page whenever shouldToggle is true
-  useFaviconChangeEffect(faviconLinks, shouldIterateTitles)
+  useFaviconChangeEffect(faviconLinks, shouldIterateTitles, interval)
 };

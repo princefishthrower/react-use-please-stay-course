@@ -6,7 +6,8 @@ import { useInterval } from "./useInterval";
 export const useTitleChangeEffect = (
   titles: string[],
   shouldIterateTitles: boolean,
-  animationType: AnimationType
+  animationType: AnimationType,
+  interval: number
 ) => {
   const [titleIndex, setTitleIndex] = useState(0);
 
@@ -55,7 +56,7 @@ export const useTitleChangeEffect = (
     }
   };
 
-  // at an interval of 500 ms, increment the titleIndex value
+  // at an interval of interval ms, increment the titleIndex value
   // reset it to 0 if we've reached the end of the list
   useInterval(
     () => {
@@ -69,7 +70,7 @@ export const useTitleChangeEffect = (
           return runLoopIterationLogic();
       }
     },
-    500,
+    interval,
     shouldIterateTitles
   );
 

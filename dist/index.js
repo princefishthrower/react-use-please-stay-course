@@ -28,16 +28,16 @@ var useInterval = function (callback, interval, shouldRun) {
     }, [interval, shouldRun]);
 };
 
-var useFaviconChangeEffect = function (faviconLinks, shouldIterateFavicons) {
+var useFaviconChangeEffect = function (faviconLinks, shouldIterateFavicons, interval) {
     var _a = useState(0), faviconIndex = _a[0], setFaviconIndex = _a[1];
     var faviconRef = useRef(getFavicon());
-    // at an interval of 500 ms, increment the faviconIndex value
+    // at an interval of interval ms, increment the faviconIndex value
     useInterval(function () {
         var nextIndex = faviconIndex + 1;
         nextIndex === faviconLinks.length
             ? setFaviconIndex(0)
             : setFaviconIndex(nextIndex);
-    }, 500, shouldIterateFavicons);
+    }, interval, shouldIterateFavicons);
     // when favicon index changes, set the favicon href to the given link
     useEffect(function () {
         faviconRef.current.href = faviconLinks[faviconIndex];
@@ -68,7 +68,7 @@ var AnimationType;
     AnimationType["MARQUEE"] = "MARQUEE";
 })(AnimationType || (AnimationType = {}));
 
-var useTitleChangeEffect = function (titles, shouldIterateTitles, animationType) {
+var useTitleChangeEffect = function (titles, shouldIterateTitles, animationType, interval) {
     var _a = useState(0), titleIndex = _a[0], setTitleIndex = _a[1];
     var runLoopIterationLogic = function () {
         var nextIndex = titleIndex + 1;
@@ -106,7 +106,7 @@ var useTitleChangeEffect = function (titles, shouldIterateTitles, animationType)
             document.title = offset + titles[0];
         }
     };
-    // at an interval of 500 ms, increment the titleIndex value
+    // at an interval of interval ms, increment the titleIndex value
     // reset it to 0 if we've reached the end of the list
     useInterval(function () {
         switch (animationType) {
@@ -118,7 +118,7 @@ var useTitleChangeEffect = function (titles, shouldIterateTitles, animationType)
             default:
                 return runLoopIterationLogic();
         }
-    }, 500, shouldIterateTitles);
+    }, interval, shouldIterateTitles);
     // Each time titleIndex changes, we set the document.title to the value of titles at that index
     useEffect(function () {
         switch (animationType) {
@@ -133,15 +133,15 @@ var useTitleChangeEffect = function (titles, shouldIterateTitles, animationType)
     }, [titleIndex]);
 };
 
-var usePleaseStay = function (titles, animationType, faviconLinks) {
+var usePleaseStay = function (titles, animationType, faviconLinks, interval) {
     var _a = useState(false), shouldIterateTitles = _a[0], setShouldIterateTitles = _a[1];
     // Sets the shouldToggleTitles value whenever page visibility is lost.
     // Handles removing the event listener in cleanup as well.
     useListenToVisibilityChangeOnMount(setShouldIterateTitles);
     // Modifies the document.title of the page whenever shouldToggle is true
-    useTitleChangeEffect(titles, shouldIterateTitles, animationType);
+    useTitleChangeEffect(titles, shouldIterateTitles, animationType, interval);
     // Modifies the favicon of the page whenever shouldToggle is true
-    useFaviconChangeEffect(faviconLinks, shouldIterateTitles);
+    useFaviconChangeEffect(faviconLinks, shouldIterateTitles, interval);
 };
 
 export { AnimationType, usePleaseStay };
