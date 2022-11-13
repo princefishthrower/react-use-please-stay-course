@@ -1,3 +1,4 @@
+import { validateParameters } from './../utils/validateParameters';
 import { UsePleaseStayOptions } from './../types/UsePleaseStayOptions';
 import { useState } from "react";
 import { useFaviconChangeEffect } from "./useFaviconChangeEffect";
@@ -12,6 +13,7 @@ export const usePleaseStay = ({
   interval = 500,
   shouldAlwaysPlay = false,
 }: UsePleaseStayOptions) => {
+  validateParameters(titles, animationType);
   const [shouldIterateTitles, setShouldIterateTitles] = useState(false);
 
   // Sets the shouldToggleTitles value whenever page visibility is lost.

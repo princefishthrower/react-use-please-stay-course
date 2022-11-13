@@ -1,5 +1,31 @@
 import { useRef, useEffect, useState } from 'react';
 
+var AnimationType;
+(function (AnimationType) {
+    AnimationType["LOOP"] = "LOOP";
+    AnimationType["CASCADE"] = "CASCADE";
+    AnimationType["MARQUEE"] = "MARQUEE";
+})(AnimationType || (AnimationType = {}));
+
+// simple util that issues a console.error() in development mode, and is silent in all others
+var issueWarningMessage = function (message) {
+    if (process.env.NODE_ENV === "development") {
+        console.warn("usePleaseStay: ".concat(message, " This message will be shown in development only."));
+    }
+};
+
+var validateParameters = function (titles, animationType) {
+    if (titles.length === 1 && titles[0] === "") {
+        issueWarningMessage("You have passed an empty string as the title. This will result in no text being displayed, regardless of AnimationType chosen.");
+    }
+    if (titles.length > 1 && animationType === AnimationType.CASCADE) {
+        issueWarningMessage('You have passed more than one title, but have specified "AnimationType.CASCADE". Only the first title in the titles array will be used.');
+    }
+    if (titles.length > 1 && animationType === AnimationType.MARQUEE) {
+        issueWarningMessage('You have passed more than one title, but have specified "AnimationType.MARQUEE". Only the first title in the titles array will be used.');
+    }
+};
+
 var getFavicon = function () {
     var nodeList = document.getElementsByTagName('link');
     for (var i = 0; i < nodeList.length; i++) {
@@ -66,13 +92,6 @@ var useListenToVisibilityChangeOnMount = function (setShouldToggleTitles, should
 };
 
 var CHROME_TAB_CHARACTER_COUNT = 30;
-
-var AnimationType;
-(function (AnimationType) {
-    AnimationType["LOOP"] = "LOOP";
-    AnimationType["CASCADE"] = "CASCADE";
-    AnimationType["MARQUEE"] = "MARQUEE";
-})(AnimationType || (AnimationType = {}));
 
 var useTitleChangeEffect = function (titles, shouldIterateTitles, animationType, interval) {
     var _a = useState(0), titleIndex = _a[0], setTitleIndex = _a[1];
@@ -141,6 +160,7 @@ var useTitleChangeEffect = function (titles, shouldIterateTitles, animationType,
 
 var usePleaseStay = function (_a) {
     var titles = _a.titles, _b = _a.animationType, animationType = _b === void 0 ? AnimationType.LOOP : _b, _c = _a.faviconLinks, faviconLinks = _c === void 0 ? [] : _c, _d = _a.interval, interval = _d === void 0 ? 500 : _d, _e = _a.shouldAlwaysPlay, shouldAlwaysPlay = _e === void 0 ? false : _e;
+    validateParameters(titles, animationType);
     var _f = useState(false), shouldIterateTitles = _f[0], setShouldIterateTitles = _f[1];
     // Sets the shouldToggleTitles value whenever page visibility is lost.
     // Handles removing the event listener in cleanup as well.
