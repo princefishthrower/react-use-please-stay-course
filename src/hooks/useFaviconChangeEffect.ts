@@ -13,10 +13,12 @@ export const useFaviconChangeEffect = (
   // at an interval of interval ms, increment the faviconIndex value
   useInterval(
     () => {
-      const nextIndex = faviconIndex + 1;
-      nextIndex === faviconLinks.length
-        ? setFaviconIndex(0)
-        : setFaviconIndex(nextIndex);
+      if (faviconLinks.length > 1) {
+        const nextIndex = faviconIndex + 1;
+        nextIndex === faviconLinks.length
+          ? setFaviconIndex(0)
+          : setFaviconIndex(nextIndex);
+      }
     },
     interval,
     shouldIterateFavicons

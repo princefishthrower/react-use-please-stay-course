@@ -1,2 +1,2 @@
-import { AnimationType } from "../enums/AnimationType";
-export declare const usePleaseStay: (titles: string[], animationType: AnimationType, faviconLinks: string[], interval: number, shouldAlwaysPlay: boolean) => void;
+import { UsePleaseStayOptions } from './../types/UsePleaseStayOptions';
+export declare const usePleaseStay: ({ titles, animationType, faviconLinks, interval, shouldAlwaysPlay, }: UsePleaseStayOptions) => void;

@@ -1,2 +1,3 @@
 import { AnimationType } from "../enums/AnimationType";
-export declare const useTitleChangeEffect: (titles: string[], shouldIterateTitles: boolean, animationType: AnimationType, interval: number) => void;
+import { ArrayOfOneOrMore } from "../types/ArrayOfOneOrMore";
+export declare const useTitleChangeEffect: (titles: ArrayOfOneOrMore<string>, shouldIterateTitles: boolean, animationType: AnimationType, interval: number) => void;

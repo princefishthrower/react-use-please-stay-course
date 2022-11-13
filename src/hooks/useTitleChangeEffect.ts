@@ -1,10 +1,11 @@
 import { useEffect, useState } from "react";
 import { CHROME_TAB_CHARACTER_COUNT } from "../constants/Constants";
 import { AnimationType } from "../enums/AnimationType";
+import { ArrayOfOneOrMore } from "../types/ArrayOfOneOrMore";
 import { useInterval } from "./useInterval";
 
 export const useTitleChangeEffect = (
-  titles: string[],
+  titles: ArrayOfOneOrMore<string>,
   shouldIterateTitles: boolean,
   animationType: AnimationType,
   interval: number

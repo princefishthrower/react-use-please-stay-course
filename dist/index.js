@@ -33,10 +33,12 @@ var useFaviconChangeEffect = function (faviconLinks, shouldIterateFavicons, inte
     var faviconRef = useRef(getFavicon());
     // at an interval of interval ms, increment the faviconIndex value
     useInterval(function () {
-        var nextIndex = faviconIndex + 1;
-        nextIndex === faviconLinks.length
-            ? setFaviconIndex(0)
-            : setFaviconIndex(nextIndex);
+        if (faviconLinks.length > 1) {
+            var nextIndex = faviconIndex + 1;
+            nextIndex === faviconLinks.length
+                ? setFaviconIndex(0)
+                : setFaviconIndex(nextIndex);
+        }
     }, interval, shouldIterateFavicons);
     // when favicon index changes, set the favicon href to the given link
     useEffect(function () {
@@ -137,8 +139,9 @@ var useTitleChangeEffect = function (titles, shouldIterateTitles, animationType,
     }, [titleIndex]);
 };
 
-var usePleaseStay = function (titles, animationType, faviconLinks, interval, shouldAlwaysPlay) {
-    var _a = useState(false), shouldIterateTitles = _a[0], setShouldIterateTitles = _a[1];
+var usePleaseStay = function (_a) {
+    var titles = _a.titles, _b = _a.animationType, animationType = _b === void 0 ? AnimationType.LOOP : _b, _c = _a.faviconLinks, faviconLinks = _c === void 0 ? [] : _c, _d = _a.interval, interval = _d === void 0 ? 500 : _d, _e = _a.shouldAlwaysPlay, shouldAlwaysPlay = _e === void 0 ? false : _e;
+    var _f = useState(false), shouldIterateTitles = _f[0], setShouldIterateTitles = _f[1];
     // Sets the shouldToggleTitles value whenever page visibility is lost.
     // Handles removing the event listener in cleanup as well.
     useListenToVisibilityChangeOnMount(setShouldIterateTitles, shouldAlwaysPlay);

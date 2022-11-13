@@ -1,16 +1,17 @@
+import { UsePleaseStayOptions } from './../types/UsePleaseStayOptions';
 import { useState } from "react";
-import { AnimationType } from "../enums/AnimationType";
 import { useFaviconChangeEffect } from "./useFaviconChangeEffect";
 import { useListenToVisibilityChangeOnMount } from "./useListenToVisibilityChangeOnMount";
 import { useTitleChangeEffect } from "./useTitleChangeEffect";
+import { AnimationType } from '../enums/AnimationType';
 
-export const usePleaseStay = (
-  titles: string[],
-  animationType: AnimationType,
-  faviconLinks: string[],
-  interval: number,
-  shouldAlwaysPlay: boolean
-) => {
+export const usePleaseStay = ({
+  titles,
+  animationType = AnimationType.LOOP,
+  faviconLinks = [],
+  interval = 500,
+  shouldAlwaysPlay = false,
+}: UsePleaseStayOptions) => {
   const [shouldIterateTitles, setShouldIterateTitles] = useState(false);
 
   // Sets the shouldToggleTitles value whenever page visibility is lost.
