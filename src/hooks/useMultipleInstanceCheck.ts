@@ -8,7 +8,7 @@ export const useMultipleInstancesCheck = () => {
       issueWarningMessage(
         `usePleaseStay should be mounted only once in an application. Doing otherwise could lead to 👻 strange 👻 behavior. usePleaseStay was last mounted at ${localStorage.getItem(
           "usePleaseStay"
-        )} Please check your code for multiple usePleaseStay usages. Because React in development uses StrictMode, this warning is only valid if you see this warning appear more than once with different dates in your console. See here for more information: https://reactjs.org/docs/strict-mode.html#ensuring-reusable-state`
+        )} Please check your code for multiple usePleaseStay usages. This warning is only valid if you see this warning appear more than once with different 'mounted at' dates in your console.`
       );
     }
     // on mount, set the storage value to the curent ISO time

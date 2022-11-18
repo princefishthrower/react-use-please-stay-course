@@ -7,4 +7,5 @@ export type UsePleaseStayOptions = {
   faviconLinks?: string[];
   interval?: number;
   shouldAlwaysPlay?: boolean;
+  restoreDefaultsOnFocus?: boolean;
 };

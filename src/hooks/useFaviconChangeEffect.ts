@@ -1,16 +1,20 @@
 import { useEffect, useRef, useState } from "react";
 import { getFavicon } from "../utils/getFavicon";
+import { setFaviconHref } from "../utils/setFaviconHref";
 import { useInterval } from "./useInterval";
 
 export const useFaviconChangeEffect = (
   faviconLinks: string[],
   shouldIterateFavicons: boolean,
-  interval: number
+  interval: number,
+  shouldAlwaysPlay: boolean
 ) => {
   const [faviconIndex, setFaviconIndex] = useState(0);
-  const faviconRef = useRef<HTMLLinkElement | null>(getFavicon());
+  const originalFaviconHref = useRef<string>();
+  const faviconRef = useRef<HTMLLinkElement | null>();
 
   // at an interval of interval ms, increment the faviconIndex value
+  // (if shouldIterateFavicons or shouldAlwaysPlay is true)
   useInterval(
     () => {
       if (faviconLinks.length > 1) {
@@ -21,12 +25,35 @@ export const useFaviconChangeEffect = (
       }
     },
     interval,
-    shouldIterateFavicons
+    shouldIterateFavicons || shouldAlwaysPlay
   );
 
-  // when favicon index changes, set the favicon href to the given link
+  // when favicon index changes, and when shouldIterateFavicons is true set the favicon href to the given link
   useEffect(() => {
-    faviconRef.current.href = faviconLinks[faviconIndex];
-    faviconRef.current.setAttribute("style", "transform: rotate(180deg)");
-  }, [faviconIndex]);
+    if (shouldIterateFavicons) {
+      faviconRef.current.href = faviconLinks[faviconIndex];
+      return;
+    }
+    // if shouldIterateFavicons goes to false and should always play is false, AND originalfaviconhref is actually defined,
+    // we should restore the original href
+    if (
+      !shouldIterateFavicons &&
+      !shouldAlwaysPlay &&
+      originalFaviconHref.current
+    ) {
+      setFaviconHref(originalFaviconHref.current);
+    }
+  }, [faviconIndex, shouldIterateFavicons]);
+
+  // on mount, save the original href of the favicon
+  useEffect(() => {
+    faviconRef.current = getFavicon();
+    originalFaviconHref.current = faviconRef.current.href;
+    // on unmount, restore the original favicon (by setting whatever faviconRef is to the original favicon)
+    return () => {
+      if (originalFaviconHref.current) {
+        faviconRef.current.href = originalFaviconHref.current;
+      }
+    };
+  }, []);
 };
