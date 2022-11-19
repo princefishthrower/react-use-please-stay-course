@@ -1,5 +1,5 @@
 {
-  "name": "react-use-please-stay",
+  "name": "@fullstackcraftllc/react-use-please-stay",
   "version": "1.0.0",
   "description": "A fun React hook that animates the document title and/or favicon when focus from the page is lost.",
   "main": "dist/index.js",

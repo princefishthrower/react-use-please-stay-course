@@ -84,6 +84,7 @@ var useFaviconChangeEffect = function (faviconLinks, shouldIterateFavicons, inte
     var originalFaviconHref = useRef();
     var faviconRef = useRef();
     // at an interval of interval ms, increment the faviconIndex value
+    // (if shouldIterateFavicons or shouldAlwaysPlay is true)
     useInterval(function () {
         if (faviconLinks.length > 1) {
             var nextIndex = faviconIndex + 1;
