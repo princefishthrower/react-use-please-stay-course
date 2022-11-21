@@ -1,6 +1,7 @@
 {
   "name": "example",
   "version": "0.1.0",
+  "homepage": "https://princefishthrower.github.io/react-use-please-stay-course",
   "private": true,
   "dependencies": {
     "@fullstackcraftllc/react-use-please-stay": "^1.0.0",
